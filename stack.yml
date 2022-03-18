@@ -4,7 +4,7 @@ Parameters:
   S3BucketName:
     Type: String
     Description: Name for the S3 bucket.
-    Default: productbucket323
+    Default: productbucket3234
 
   Environment:
     Type: String
