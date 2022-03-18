@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+
+  S3BucketName:
+    Type: String
+    Description: Name for the S3 bucket.
+    Default: dfo-bucket
+
+  Environment:
+    Type: String
+    Description: What environment is being deployed
+    Default: dev
+    AllowedValues:
+      - sbx
+      - dev
+      - test
+      - prod
+
+Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: !Sub
+        - '${Environment}-${S3BucketName}-${RandomGUID}'
+        - { RandomGUID: !Select [ 0, !Split [ "-", !Select [ 2, !Split [ "/", !Ref AWS::StackId ] ] ] ] }
