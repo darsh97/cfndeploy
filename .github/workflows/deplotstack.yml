@@ -1,0 +1,42 @@
+name: Deploy CFN stack
+
+on:
+  push:
+    paths:
+      - 'products.json'
+      
+jobs:     
+  deploy stack:
+    runs-on: ubuntu-latest
+    steps:
+    - name: PR checkout
+      uses: actions/checkout@v2
+      
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - uses: actions/cache@master
+      id: cache
+      with:
+        path: ${{ env.pythonLocation}}/lib/python3.9/site-packages/*
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+    - name: Install requirements
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+          echo "Installing dependencies and caching them."
+          pip install -r requirements.txt
+        
+    - name: Deploy Stack
+      uses: aws-actions/aws-cloudformation-github-deploy@v1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-east-1'   
+        AWS_DEFAULT_REGION: 'us-east-2'
+      with:
+        name: s3Stack
+        template: stack.yaml
+ 
