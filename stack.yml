@@ -1,11 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
 Parameters:
-
   S3BucketName:
     Type: String
     Description: Name for the S3 bucket.
-    Default: dfo-bucket
+    Default: productbucket323
 
   Environment:
     Type: String
@@ -21,6 +20,4 @@ Resources:
   Bucket:
     Type: AWS::S3::Bucket
     Properties: 
-      BucketName: !Sub
-        - '${Environment}-${S3BucketName}-${RandomGUID}'
-        - { RandomGUID: !Select [ 0, !Split [ "-", !Select [ 2, !Split [ "/", !Ref AWS::StackId ] ] ] ] }
+      BucketName: !Ref S3BucketName
