@@ -36,6 +36,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-east-1'   
         AWS_DEFAULT_REGION: 'us-east-1'
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       with:
         name: s3Stack
         template: stack.yml
