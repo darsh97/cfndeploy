@@ -10,7 +10,7 @@ s3_client = boto3.client('s3')
 
 with open("products.json", "r") as config_file:
     config_content = json.load(config_file)
-    PRODUCT_NAMES = config_content.get("products")
+    PRODUCT_NAMES = config_content["products"]
 
 def lambda_handler(event, context):
     try:
