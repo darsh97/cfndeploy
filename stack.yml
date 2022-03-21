@@ -38,7 +38,7 @@ Resources:
   CustomLambdaFunction:
     Type: AWS::Lambda::Function
     DependsOn: LambdaFunctionRole
-    Properties:
+    Properties: "arn:aws:iam::433187729648:role/LambdaS3FullAccess"
       Tags:
         [
           { "Key": "PrimaryOwner", "Value": "PFE-RAPID-IAS-DEVELOPER-SSO/DARSHAN.ARAVIND@pfizer.com" },
