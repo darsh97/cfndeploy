@@ -49,8 +49,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       with:
-        name: s3Stack
+        name: S3andSubfolderStack
         no-fail-on-empty-changeset: "1"
-        capabilities: "CAPABILITY_IAM"
+        capabilities: "CAPABILITY_NAMED_IAM"
         template: stack.yml
  
