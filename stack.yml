@@ -49,48 +49,15 @@ Resources:
         ]
       FunctionName: !Sub '${Environment}-${S3BucketName}'
       Handler: lambda_function.lambda_handler
-      Role: !GetAtt LambdaFunctionRole.Arn
+      Role: "arn:aws:iam::433187729648:role/LambdaS3FullAccess"
       Runtime: python3.9
       Timeout: 300
       Code:
         S3Bucket: codebucket234
         S3Key: code.zip
 
-  LambdaFunctionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Sub 'CUSPFE-${Environment}-GMAIST-${S3BucketName}-Role'
-      PermissionsBoundary: arn:aws:iam::420737321821:policy/PFE-BASELINE-DelegatedUserPermission-Boundary
-
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - sts:AssumeRole
-      Path: /
-      Policies:
-        - PolicyName: !Sub 'CUSPFE-${Environment}-GMAIST-${S3BucketName}-Policy'
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 's3:*'
-                Resource:
-                  - !Sub 'arn:aws:s3:::${Environment}-${S3BucketName}'
-                  - !Sub 'arn:aws:s3:::${Environment}-${S3BucketName}/*'
-              - Effect: Allow
-                Action:
-                  - 'logs:*'
-                Resource: '*'
-
   CustomResource:
     Type: Custom::CustomResource
-
     Properties:
       Tags:
         [
