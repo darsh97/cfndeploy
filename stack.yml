@@ -37,7 +37,6 @@ Resources:
 
   CustomLambdaFunction:
     Type: AWS::Lambda::Function
-    DependsOn: "arn:aws:iam::433187729648:role/LambdaS3FullAccess"
     Properties:
       Tags:
         [
