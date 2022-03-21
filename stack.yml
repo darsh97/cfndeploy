@@ -3,21 +3,101 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   S3BucketName:
     Type: String
-    Description: Name for the S3 bucket.
-    Default: productbucket3234
+    Description: Name for the DFO S3 bucket.
+    Default: gmaist-dfo-Testsmainbucket210
 
   Environment:
     Type: String
     Description: What environment is being deployed
-    Default: dev
+    Default: sbx
     AllowedValues:
       - sbx
       - dev
       - test
       - prod
 
+
 Resources:
   Bucket:
     Type: AWS::S3::Bucket
-    Properties: 
-      BucketName: !Ref S3BucketName
+    Properties:
+      Tags:
+        [
+          { "Key": "PrimaryOwner", "Value": "PFE-RAPID-IAS-DEVELOPER-SSO/DARSHAN.ARAVIND@pfizer.com" },
+          { "Key": "SecondaryOwner", "Value": "Eman" },
+          { "Key": "Enviroment", "Value": "sbx"},
+          { "Key": "CostCenterID" , "Value": "2331084"},
+          { "Key": "Name","Value": "sbx-GMAIST" }
+        ]
+      BucketName: !Sub '${Environment}-${S3BucketName}'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  CustomLambdaFunction:
+    Type: AWS::Lambda::Function
+    DependsOn: LambdaFunctionRole
+    Properties:
+      Tags:
+        [
+          { "Key": "PrimaryOwner", "Value": "PFE-RAPID-IAS-DEVELOPER-SSO/DARSHAN.ARAVIND@pfizer.com" },
+          { "Key": "SecondaryOwner", "Value": "Eman" },
+          { "Key": "Enviroment", "Value": "sbx"},
+          { "Key": "CostCenterID" , "Value": "2331084"},
+          { "Key": "Name","Value": "sbx-GMAIST" }
+        ]
+      FunctionName: !Sub '${Environment}-${S3BucketName}'
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt LambdaFunctionRole.Arn
+      Runtime: python3.9
+      Timeout: 300
+      Code:
+        S3Bucket: codebucket234
+        S3Key: code.zip
+
+  LambdaFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'CUSPFE-${Environment}-GMAIST-${S3BucketName}-Role'
+      PermissionsBoundary: arn:aws:iam::420737321821:policy/PFE-BASELINE-DelegatedUserPermission-Boundary
+
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: !Sub 'CUSPFE-${Environment}-GMAIST-${S3BucketName}-Policy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:*'
+                Resource:
+                  - !Sub 'arn:aws:s3:::${Environment}-${S3BucketName}'
+                  - !Sub 'arn:aws:s3:::${Environment}-${S3BucketName}/*'
+              - Effect: Allow
+                Action:
+                  - 'logs:*'
+                Resource: '*'
+
+  CustomResource:
+    Type: Custom::CustomResource
+
+    Properties:
+      Tags:
+        [
+          { "Key": "PrimaryOwner", "Value": "PFE-RAPID-IAS-DEVELOPER-SSO/DARSHAN.ARAVIND@pfizer.com" },
+          { "Key": "SecondaryOwner", "Value": "Eman" },
+          { "Key": "Enviroment", "Value": "sbx"},
+          { "Key": "CostCenterID" , "Value": "2331084"},
+          { "Key": "Name","Value": "sbx-GMAIST" }
+        ]
+      ServiceToken: !GetAtt CustomLambdaFunction.Arn
