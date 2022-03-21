@@ -53,4 +53,6 @@ jobs:
         no-fail-on-empty-changeset: "1"
         capabilities: "CAPABILITY_NAMED_IAM"
         template: stack.yml
+        parameter-overrides: "S3CodeKey=code-${{ hashFiles('lambda_src/products.json') }}.zip"
+
  

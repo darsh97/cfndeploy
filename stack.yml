@@ -6,6 +6,10 @@ Parameters:
     Description: Name for the DFO S3 bucket.
     Default: gmaist-dfo-s3subfolder434
 
+    S3CodeKey:
+      Type: String
+      Default: code.zip
+
   Environment:
     Type: String
     Description: What environment is being deployed
@@ -53,7 +57,7 @@ Resources:
       Timeout: 300
       Code:
         S3Bucket: codebucket234
-        S3Key: code.zip
+        S3Key: !Ref S3CodeKey
 
   CustomResource:
     Type: Custom::CustomResource
