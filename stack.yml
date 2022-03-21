@@ -4,7 +4,7 @@ Parameters:
   S3BucketName:
     Type: String
     Description: Name for the DFO S3 bucket.
-    Default: gmaist-dfo-Testsmainbucket210
+    Default: gmaist-dfo-testsmainbucket210
 
   Environment:
     Type: String
