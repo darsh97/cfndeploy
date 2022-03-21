@@ -8,14 +8,9 @@ from botocore.exceptions import ClientError
 
 s3_client = boto3.client('s3')
 
-PRODUCT_NAMES = (
-    'prod1',
-    'prod2',
-    'prod3',
-    'prod4',
-    'prod5',
-    'prod6',
-)
+with open('products.json', 'r') as config_file:
+    data = json.load(config_file)
+    PRODUCT_NAMES = data["products"]
 
 
 def lambda_handler(event, context):
