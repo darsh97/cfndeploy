@@ -6,9 +6,9 @@ Parameters:
     Description: Name for the DFO S3 bucket.
     Default: gmaist-dfo-s3subfolder434
 
-    S3CodeKey:
-      Type: String
-      Default: code.zip
+  S3CodeKey:
+    Type: String
+    Default: code.zip
 
   Environment:
     Type: String
