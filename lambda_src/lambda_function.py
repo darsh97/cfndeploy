@@ -8,9 +8,15 @@ from botocore.exceptions import ClientError
 
 s3_client = boto3.client('s3')
 
-with open("products.json", "r") as config_file:
-    config_content = json.load(config_file)
-    PRODUCT_NAMES = config_content["products"]
+PRODUCT_NAMES = (
+    'prod1',
+    'prod2',
+    'prod3',
+    'prod4',
+    'prod5',
+    'prod6',
+)
+
 
 def lambda_handler(event, context):
     try:
@@ -27,7 +33,7 @@ def lambda_handler(event, context):
 
 
 def handle_create(event, context):
-    create_folders()
+    create_folders(PRODUCT_NAMES)
     cfnresponse.send(event, context, cfnresponse.SUCCESS,
                      {})
 
@@ -38,12 +44,11 @@ def handle_delete(event, context):
 
 
 def handle_update(event, context):
-    create_folders()
     cfnresponse.send(event, context, cfnresponse.SUCCESS,
                      {})
 
 
-def create_folders():
+def create_folders(product_names):
     DUMMY_FILE = '/tmp/dummy.txt'
 
     s3_bucket = os.environ['AWS_LAMBDA_FUNCTION_NAME']
