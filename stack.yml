@@ -8,7 +8,6 @@ Parameters:
 
   S3CodeKey:
     Type: String
-    Default: code.zip
 
   Environment:
     Type: String
