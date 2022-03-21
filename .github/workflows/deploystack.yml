@@ -28,6 +28,9 @@ jobs:
       run: |
           echo "Installing dependencies and caching them."
           pip install -r requirements.txt
+
+    - name: zip files
+      run: zip -r code.zip lambda_function.py products.json
         
     - name: deploy stack
       uses: aws-actions/aws-cloudformation-github-deploy@v1
