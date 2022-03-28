@@ -29,12 +29,15 @@ def lambda_handler(event, context):
     }
 
     trigger_request: str = trigger_req_api.format(owner=owner, repo=repo)
+
+    print(trigger_request)
+
     event_data = {"event_type": "product1_inference"}
     response = requests.post(
         url=trigger_request,
         headers=headers,
         data=json.dumps(event_data)
     )
-    return response
+    return response.content
 
 print(lambda_handler("", ""))
