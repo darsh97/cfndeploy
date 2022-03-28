@@ -1,9 +1,7 @@
 name: Deploy CFN stack
 
 on:
-  push:
-    paths:
-      - 'lambda_src/products.json'
+  workflow_dispatch:
       
 jobs:     
   deploystack:

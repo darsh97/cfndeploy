@@ -6,16 +6,15 @@ import json
 with open("lambda_src/products.json", "r") as config:
     config_contents = json.load(config)
 
-def get_digest(file_path):
-    h = hashlib.sha256()
-    with open(file_path, 'rb') as file:
-        while True:
-            # Reading is buffered, so we can read smaller chunks.
-            chunk = file.read(h.block_size)
-            if not chunk: break
-            h.update(chunk)
 
-    return h.hexdigest()
+# S3CodeKey=code-8d296273ad81efc8f3397a67d1a958438b83f9da3b630fcb50e11254b91ac470.zip
+
+
+def get_digest(file_path):
+    with open(file_path, "r") as f:
+        for line in f.readlines():
+            m = hashlib.sha256(line.encode('utf8'))
+        return m.hexdigest()
 
 
 s3_bucket_name = config_contents["bucket"]

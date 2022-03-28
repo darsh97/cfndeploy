@@ -46,7 +46,7 @@ def handle_update(event, context):
 def create_folders(product_names):
     DUMMY_FILE = '/tmp/dummy.txt'
 
-    s3_bucket = os.environ['AWS_LAMBDA_FUNCTION_NAME']
+    s3_bucket = os.environ['AWS1_LAMBDA_FUNCTION_NAME']
 
     with open(DUMMY_FILE, 'w'):
         pass
