@@ -40,4 +40,5 @@ def lambda_handler(event, context):
     )
     return response.content
 
+
 print(lambda_handler("", ""))
